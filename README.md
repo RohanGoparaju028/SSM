@@ -1,5 +1,5 @@
 # SSM
-A Smart Pantry System that keep track of your grocery so you don't need to.
+A Smart Item System that keep track of your grocery so you don't need to.
 
 # Goal 
 
