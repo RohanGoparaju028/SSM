@@ -18,6 +18,12 @@ model User {
   FirstName String
   LastName String 
   Email String @unique
+  Password String
   Age Int 
   Gender String
+}
+model Login {
+  Id Int @id @default(autoincrement())
+  Email String @unique
+  Password String 
 }
