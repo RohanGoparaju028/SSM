@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, ConflictException } from '@nestjs/common';
 import { PrismaService } from './prisma.service.js';
-import { User, Prisma } from './generated/prisma/client.js';
-import { bcrypt } from 'bcrypt';
-
+import { User, Prisma } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 
 async function encryptPassword(password: string): Promise<string> {
@@ -14,10 +13,10 @@ async function encryptPassword(password: string): Promise<string> {
 export class SignupServices {
    constructor(private prisma: PrismaService) {
    }
-   async SignUp(firstName: string, lastName: string, email: string, password: string, age: number, gender: string): Promise<User | Error> {
+   async SignUp(firstName: string, lastName: string, email: string, password: string, age: number, gender: string): Promise<{ message: string, statuscode: number }> {
       try {
          let encryptedPassword: string = await encryptPassword(password);
-         const newUser = await this.prisma.user.create({
+         const _ = await this.prisma.user.create({
             data: {
                FirstName: firstName,
                LastName: lastName,
@@ -27,12 +26,13 @@ export class SignupServices {
                Gender: gender
             },
          });
-         return newUser;
+         return { message: 'Successfully regesterd', statuscode: 303 };
       } catch (error) {
+         console.error("DEBUG ERROR:", error)
          if (error.code == 'P2002') {
-            throw new Error('Email Already exist');
+            throw new ConflictException('Email Already exist');
          }
-         throw new Error("Internal Server Exception");
+         throw new InternalServerErrorException("Internal Server Exception");
       }
    }
 }
