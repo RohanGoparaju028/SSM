@@ -6,10 +6,12 @@ import { SignupServices } from './signup.services';
 import { PrismaService } from './prisma.service';
 import { LoginController } from './login.controller';
 import { LoginServices } from './login.services';
+import { ProductServices } from './Home.services';
+import { ProductController } from './Home.controller'
 
 @Module({
   imports: [],
-  controllers: [AppController, SignUP, LoginController],
-  providers: [AppService, SignupServices, PrismaService, LoginServices],
+  controllers: [AppController, SignUP, LoginController, ProductController],
+  providers: [AppService, SignupServices, PrismaService, LoginServices, ProductServices],
 })
 export class AppModule { }

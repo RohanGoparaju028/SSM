@@ -1,0 +1,6 @@
+LICENSE
+backend/node_modules
+.gitignore
+README.md
+backend/dist
+backend/test

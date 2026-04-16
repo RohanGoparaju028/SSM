@@ -21,8 +21,11 @@ model User {
   Age Int 
   Gender String
 }
-model Login {
-  Id Int @id @default(autoincrement())
-  Email String @unique
-  Password String 
+
+
+model Product {
+  ID Int @id @default(autoincrement())
+  productName String @unique
+  productQuantity Int
+  expiryDate DateTime?
 }
