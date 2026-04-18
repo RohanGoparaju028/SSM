@@ -8,7 +8,7 @@ export class ProductController {
     constructor(private products: ProductServices) { }
     @Post()
     async insertProduct(@Body() product) {
-        let result = await this.products.StoreProducts(product.productName, product.productQuantity, product.expiryDate);
+        let result = await this.products.StoreProducts(product.userId, product.productName, product.productQuantity, product.expiryDate);
         return result;
     }
 }

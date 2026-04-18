@@ -5,11 +5,12 @@ import { Product, Prisma } from '@prisma/client';
 export class ProductServices {
   constructor(private prisma: PrismaService) { }
 
-  async StoreProducts(productName: string, productQuantity: number, expirtyDate: Date | undefined): Promise<{ message: string, statusCode: number }> {
+  async StoreProducts(userId: number, productName: string, productQuantity: number, expirtyDate: Date | undefined): Promise<{ message: string, statusCode: number }> {
     try {
       const _ = await this.prisma.product.create(
         {
           data: {
+            userId: userId,
             productName: productName,
             productQuantity: productQuantity,
             expiryDate: expirtyDate

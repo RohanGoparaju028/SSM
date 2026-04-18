@@ -20,11 +20,14 @@ model User {
   Password String
   Age Int 
   Gender String
+  products Product[]
 }
 
 
 model Product {
   ID Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields:[userId],references:[Id])
   productName String @unique
   productQuantity Int
   expiryDate DateTime?
