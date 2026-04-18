@@ -2,5 +2,9 @@
   "dependencies": {
     "@nestjs-modules/mailer": "^2.3.4",
     "nodemailer": "^8.0.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
   }
 }
