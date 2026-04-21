@@ -25,10 +25,14 @@ model User {
 
 
 model Product {
-  ID Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   userId Int
   user User @relation(fields:[userId],references:[Id])
-  productName String @unique
+  barcode String @unique
+  productName String 
+  brands String?
   productQuantity Int
   expiryDate DateTime?
+  createdAt DateTime @default(now())
+  updatedOn DateTime @updatedAt
 }

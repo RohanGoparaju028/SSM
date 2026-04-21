@@ -5,7 +5,7 @@ import * as  bcrypt from 'bcrypt';
 export class LoginServices {
     constructor(private prisma: PrismaService) { }
 
-    async Login(email: string, password: string): Promise<{ message: string, statuscode: number }> {
+    async Login(email: string, password: string): Promise<{ message: string, statuscode: number, userId?: number }> {
         try {
             const user = await this.prisma.user.findUnique({
                 where: { Email: email },
@@ -17,7 +17,7 @@ export class LoginServices {
             }
             let storedPassword = await bcrypt.compare(password, user.Password);
             if (storedPassword) {
-                return { message: "User exist", statuscode: 302 };
+                return { message: "User exist", statuscode: 302, userId: user.Id };
             } else {
                 return { message: "Wrong Password", statuscode: 401 };
             }

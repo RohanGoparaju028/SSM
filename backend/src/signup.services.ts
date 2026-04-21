@@ -13,10 +13,10 @@ async function encryptPassword(password: string): Promise<string> {
 export class SignupServices {
    constructor(private prisma: PrismaService) {
    }
-   async SignUp(firstName: string, lastName: string, email: string, password: string, age: number, gender: string): Promise<{ message: string, statuscode: number }> {
+   async SignUp(firstName: string, lastName: string, email: string, password: string, age: number, gender: string): Promise<{ message: string, statuscode: number, userId?: number }> {
       try {
          let encryptedPassword: string = await encryptPassword(password);
-         const _ = await this.prisma.user.create({
+          const user = await this.prisma.user.create({
             data: {
                FirstName: firstName,
                LastName: lastName,
@@ -26,7 +26,7 @@ export class SignupServices {
                Gender: gender
             },
          });
-         return { message: 'Successfully regesterd', statuscode: 303 };
+         return { message: 'Successfully regesterd', statuscode: 303, userId: user.Id };
       } catch (error) {
          console.error("DEBUG ERROR:", error)
          if (error.code == 'P2002') {
