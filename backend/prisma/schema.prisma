@@ -34,5 +34,5 @@ model Product {
   productQuantity Int
   expiryDate DateTime?
   createdAt DateTime @default(now())
-  updatedOn DateTime @updatedAt
+  updatedOn DateTime? @updatedAt
 }
