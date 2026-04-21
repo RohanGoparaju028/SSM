@@ -10,10 +10,11 @@ import { ProductServices } from './Home.services';
 import { ProductController } from './Home.controller'
 import { StoreProducts } from './Get_Product.services';
 import { AddProductController } from './Get_Product.controller';
+import { ExpiryItems } from './EmailServices/SendEmail.Services';
 
 @Module({
   imports: [],
   controllers: [AppController, SignUP, LoginController, ProductController, AddProductController],
-  providers: [AppService, SignupServices, PrismaService, LoginServices, ProductServices, StoreProducts],
+  providers: [AppService, SignupServices, PrismaService, LoginServices, ProductServices, StoreProducts, ExpiryItems],
 })
 export class AppModule { }
