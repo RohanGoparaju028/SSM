@@ -23,7 +23,10 @@ export class TrackProduct {
             })
             const count = await this.prisma.usageHistory.count();
             if (count > 5) {
-                console.log("This is the place holder I am implementing a recommandation algorithm to deal with this");
+                const product = await this.prisma.product.findMany({
+                    where: { userId: userId },
+                    select: { productName: true, productQuantity: true, createdAt: true, }
+                })
             }
             else if (count < 5 && productDetails?.productQuantity != undefined && productDetails?.productQuantity < defualtQuantity) {
 
