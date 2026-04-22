@@ -6,7 +6,7 @@ the model the most updated information to make an appropriate prediction.
 import { Injectable, Body } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js'
 import { ExpiryItems } from './SendEmail.Services';
-const defualtQuantity = 4;
+const defualtQuantity = 5;
 const time: Date = new Date()
 @Injectable()
 export class TrackProduct {
@@ -21,15 +21,20 @@ export class TrackProduct {
                 where: { Id: userId },
                 select: { Email: true }
             })
-            if (productDetails?.productQuantity != undefined && productDetails?.productQuantity < defualtQuantity) {
+            const count = await this.prisma.usageHistory.count();
+            if (count > 5) {
+                console.log("This is the place holder I am implementing a recommandation algorithm to deal with this");
+            }
+            else if (count < 5 && productDetails?.productQuantity != undefined && productDetails?.productQuantity < defualtQuantity) {
 
                 await this.items.AboutToFinish(email!.Email, productDetails.productName, productDetails?.productQuantity);
             }
-            if (productDetails != null && productDetails.expiryDate != null && productDetails.expiryDate === time) {
+            if (productDetails != null && productDetails.expiryDate != null && productDetails.expiryDate.getTime() === time.getTime()) {
                 await this.items.expiryEmail(email!.Email, productDetails.productName);
             }
-        } catch (error) {
 
+        } catch (error) {
+            console.error(error);
         }
     }
 }

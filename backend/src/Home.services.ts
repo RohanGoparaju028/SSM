@@ -1,9 +1,10 @@
 import { Injectable, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from './prisma.service.js'
 import { Product, Prisma } from '@prisma/client';
+import { TrackProduct } from './EmailServices/TrackProduct';
 @Injectable()
 export class ProductServices {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService, private trackProduct: TrackProduct) { }
 
   async StoreProducts(userId: number, barcode: string, productName: string, productQuantity: number, expirtyDate: Date | undefined): Promise<{ message: string, statusCode: number }> {
     try {
@@ -25,4 +26,22 @@ export class ProductServices {
       throw new InternalServerErrorException("We cannot process your request at the moment");
     }
   }
+  async consumeProduct(barcode: string): Promise<void> {
+    const updatedProduct = await this.prisma.product.update({
+      where: { barcode: barcode },
+      data: {
+        productQuantity: { decrement: 1 }
+      }
+    });
+
+    await this.prisma.usageHistory.create({
+      data: {
+        productId: updatedProduct.id,
+        lastUpdatedOn: new Date()
+      }
+    });
+
+    await this.trackProduct.doTracking(updatedProduct.userId);
+  }
+
 }
