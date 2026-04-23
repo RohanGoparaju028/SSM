@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { StoreProducts } from './Get_Product.services';
+import { PrismaService } from './prisma.service';
 @Controller('products')
 export class AddProductController {
     constructor(private readonly storeProducts: StoreProducts, private prisma: PrismaService) { }
@@ -16,8 +17,8 @@ export class AddProductController {
             productData.updatedOn
         );
     }
-    @Get("product/:id")
-    async getProduct(@Param() id: number) {
+    @Post("product/:id")
+    async getProduct(@Param('id') id: number) {
         const genproduct = await this.prisma.product.findMany({
             where: { userId: id },
             include: { history: true }
